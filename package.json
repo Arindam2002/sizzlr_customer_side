@@ -1,0 +1,23 @@
+{
+  "name": "sizzlr_customer_side",
+  "version": "1.0.0",
+  "description": "Providing a seamless canteen experience for everyone",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arindam2002/sizzlr_customer_side.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arindam2002/sizzlr_customer_side/issues"
+  },
+  "homepage": "https://github.com/Arindam2002/sizzlr_customer_side#readme"
+}

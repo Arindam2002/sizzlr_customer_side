@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "808579867426",
+    "project_id": "sizzlr-fc828",
+    "storage_bucket": "sizzlr-fc828.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808579867426:android:7463e70428c2c18266bb7b",
+        "android_client_info": {
+          "package_name": "com.sizzlr.sizzlr_customer_side"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC45FtQanOvEVjhD0ap4IH2eTDfyAsFfDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "808579867426-v73j1fj6bhdahkb0j2oons0sunsdrkv3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sizzlr.sizzlrManagementSide"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808579867426:android:794efc1f8c1244ca66bb7b",
+        "android_client_info": {
+          "package_name": "com.sizzlr.sizzlr_management_side"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC45FtQanOvEVjhD0ap4IH2eTDfyAsFfDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "808579867426-v73j1fj6bhdahkb0j2oons0sunsdrkv3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sizzlr.sizzlrManagementSide"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
