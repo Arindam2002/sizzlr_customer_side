@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sizzlr.sizzlr_customer_side">
    <application
-        android:label="sizzlr_customer_side"
+        android:label="Sizzlr"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
