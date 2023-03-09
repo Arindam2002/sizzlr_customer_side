@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/screens/TermsAndConditions/TermsAndConditions.dart';
 import 'package:sizzlr_customer_side/screens/YourOrders/YourOrders.dart';
 
 import '../../constants/constants.dart';
+import '../../providers/authProvider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -20,6 +22,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
@@ -36,6 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           radius: 60,
+                          backgroundImage: NetworkImage(user?.photoURL ?? ''),
                         )
                       ],
                     ),
@@ -45,9 +51,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Center(
                     child: Text(
-                      'Billie Eillish',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w500),
+                      '${user?.displayName ?? ""}',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -55,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(top: 0.0),
                   child: Center(
                     child: Text(
-                      '+91-8573918274',
+                      '+91-8573918274\n${user?.email}',
                       style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
                   ),
@@ -99,7 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       children: [
                                         Expanded(
                                           child: TextFormField(
-                                              initialValue: 'Billie Eilish',
+                                              initialValue:
+                                                  '${user?.displayName}',
                                               onChanged: (val) {
                                                 userName = val;
                                               },
@@ -110,8 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 return null;
                                               },
                                               style: TextStyle(fontSize: 12),
-                                              decoration: kFormFieldDecoration
-                                                  .copyWith(
+                                              decoration:
+                                                  kFormFieldDecoration.copyWith(
                                                 labelText: 'Name',
                                               )),
                                         ),
@@ -156,8 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 return null;
                                               },
                                               style: TextStyle(fontSize: 12),
-                                              decoration: kFormFieldDecoration
-                                                  .copyWith(
+                                              decoration:
+                                                  kFormFieldDecoration.copyWith(
                                                 labelText: 'Mobile Number',
                                               )),
                                         ),
@@ -222,8 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        YourOrders()),
+                                    builder: (context) => YourOrders()),
                               );
                             },
                           ),
@@ -268,8 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        TermsAndConditions()),
+                                    builder: (context) => TermsAndConditions()),
                               );
                             },
                           ),
@@ -300,9 +305,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
-                child:
-                    ElevatedButton(onPressed: () {}, child: Text('Logout')),
-              )
+                child: ElevatedButton(
+                    onPressed: () {
+                      authProvider.signOut();
+                    },
+                    child: Text('Logout')),
+              ),
             ],
           ),
         ],

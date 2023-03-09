@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "808579867426-augksab5tteqpp6vb3jpnnbf4dul9lnc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sizzlr.sizzlr_customer_side",
+            "certificate_hash": "f73ee951aa58b9fb8430bca5485f1beaafd333b2"
+          }
+        },
+        {
           "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "808579867426-v73j1fj6bhdahkb0j2oons0sunsdrkv3.apps.googleusercontent.com",
+              "client_id": "808579867426-gaj38rv6rukrg3o6ed8qoe7gu700lfeh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.sizzlr.sizzlrManagementSide"
+                "bundle_id": "com.sizzlr.sizzlrCustomerSide"
               }
             }
           ]
@@ -50,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "808579867426-80kvdut4j8dfdjjnp1d37e6docj84tvp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sizzlr.sizzlr_management_side",
+            "certificate_hash": "f73ee951aa58b9fb8430bca5485f1beaafd333b2"
+          }
+        },
+        {
           "client_id": "808579867426-rfvctrkbln50sa55otq8jm016cvq0m4q.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -67,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "808579867426-v73j1fj6bhdahkb0j2oons0sunsdrkv3.apps.googleusercontent.com",
+              "client_id": "808579867426-gaj38rv6rukrg3o6ed8qoe7gu700lfeh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.sizzlr.sizzlrManagementSide"
+                "bundle_id": "com.sizzlr.sizzlrCustomerSide"
               }
             }
           ]

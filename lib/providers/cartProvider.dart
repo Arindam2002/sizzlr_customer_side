@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 
 class Cart with ChangeNotifier {
-  // TODO: Instead of int make a list (possibly of strings, which will contain item id (check once which will be more economical for number of reads... Just storing item id and then searching what item or item model??))
-  int _cart = 0;
+  Map<String, int> _cartMap = {};
+  int _total = 0;
 
-  int get cart => _cart;
+  Map<String, int> get currentCartItems => _cartMap;
+  int get sumTotalMrp => _total;
 
-  void addToCart() {
-    _cart++;
+  void addToCart(String itemId) {
+    _cartMap[itemId] = (_cartMap[itemId] ?? 0) + 1;
+
     notifyListeners();
   }
 
-  void removeFromCart() {
-    _cart > 0 ? _cart-- : null;
+  void removeFromCart(String itemId) {
+    _cartMap[itemId] = (_cartMap[itemId] ?? 0) - 1;
+    if (_cartMap[itemId]! <= 0) {
+      _cartMap.remove(itemId);
+    }
+
     notifyListeners();
+  }
+
+  int? getItemQuantityInCart(String itemId) {
+    return _cartMap.containsKey(itemId) ? _cartMap[itemId] : 0;
   }
 
   void discardCart() {
-    _cart = 0;
+    _cartMap.clear();
+
     notifyListeners();
   }
 }

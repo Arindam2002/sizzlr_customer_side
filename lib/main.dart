@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sizzlr_customer_side/providers/authProvider.dart';
 import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
 import 'package:sizzlr_customer_side/providers/cartProvider.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
@@ -9,16 +11,14 @@ import 'package:sizzlr_customer_side/screens/Home/ProfileScreen.dart';
 import 'package:sizzlr_customer_side/screens/Home/components/components.dart';
 import 'package:provider/provider.dart';
 import 'constants/constants.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => Cart()),
-      ChangeNotifierProvider(create: (_) => Filter()),
-      ChangeNotifierProvider(create: (_) => Coupon()),
-    ],
-    child: MyApp(),
-  ));
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,11 +28,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData windowData =
-    MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window);
     windowData = windowData.copyWith(
       textScaleFactor: 1,
     );
-    return MediaQuery(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Cart()),
+        ChangeNotifierProvider(create: (_) => CanteenFilter()),
+        ChangeNotifierProvider(create: (_) => Coupon()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MediaQuery(
       data: windowData,
       child: MaterialApp(
         useInheritedMediaQuery: true,
@@ -42,9 +49,17 @@ class MyApp extends StatelessWidget {
           colorSchemeSeed: Color(0xFF27742D),
           textTheme: GoogleFonts.latoTextTheme(),
         ),
-        home: MyHomePage(),
+        home: Consumer<AuthProvider>(
+          builder: (context, authProvider, child) {
+            if (authProvider.user == null) {
+              return LoginScreen();
+            } else {
+              return MyHomePage();
+            }
+          },
+        ),
       ),
-    );
+    ));
   }
 }
 

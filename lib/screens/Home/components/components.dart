@@ -498,7 +498,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 5),
-                        child: context.watch<Cart>().cart == 0
+                        child: context.watch<Cart>().currentCartItems.isEmpty
                             ? OutlinedButton(
                                 style: ButtonStyle(
                                     surfaceTintColor: MaterialStateProperty.all(
@@ -510,7 +510,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                     backgroundColor: MaterialStateProperty.all(
                                         kPrimaryGreen.withAlpha(20))),
                                 onPressed: () {
-                                  context.read<Cart>().addToCart();
+                                  // context.read<Cart>().addToCart();
                                 },
                                 child: Text(
                                   'ADD',
@@ -532,7 +532,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          context.read<Cart>().removeFromCart();
+                                          // context.read<Cart>().removeFromCart();
                                         },
                                         borderRadius: BorderRadius.circular(40),
                                         radius: 40,
@@ -543,10 +543,10 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                           size: 24,
                                         ),
                                       ),
-                                      Text('${context.watch<Cart>().cart}'),
+                                      // Text('${context.watch<Cart>().cart}'),
                                       InkWell(
                                         onTap: () {
-                                          context.read<Cart>().addToCart();
+                                          // context.read<Cart>().addToCart();
                                         },
                                         borderRadius: BorderRadius.circular(40),
                                         radius: 40,
@@ -601,10 +601,11 @@ class ItemCard extends StatefulWidget {
     required this.quantity,
     required this.estTime,
     required this.price,
-    required this.imageUrl,
+    required this.imageUrl, required this.itemId,
   }) : super(key: key);
 
   final String? dishName;
+  final String? itemId;
   final String? quantity;
   final int? estTime;
   final int? price;
@@ -724,7 +725,7 @@ class _ItemCardState extends State<ItemCard> {
                               ),
                             ],
                           ),
-                          context.watch<Cart>().cart == 0
+                          context.watch<Cart>().getItemQuantityInCart('${widget.itemId}') == 0
                               ? OutlinedButton(
                                   style: ButtonStyle(
                                     padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 32)),
@@ -737,7 +738,7 @@ class _ItemCardState extends State<ItemCard> {
                                       backgroundColor: MaterialStateProperty.all(
                                           kPrimaryGreen.withAlpha(20))),
                                   onPressed: () {
-                                    context.read<Cart>().addToCart();
+                                    context.read<Cart>().addToCart('${widget.itemId}');
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 14.0),
@@ -761,7 +762,7 @@ class _ItemCardState extends State<ItemCard> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        context.read<Cart>().removeFromCart();
+                                        context.read<Cart>().removeFromCart('${widget.itemId}');
                                       },
                                       borderRadius: BorderRadius.circular(40),
                                       radius: 40,
@@ -774,11 +775,11 @@ class _ItemCardState extends State<ItemCard> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text('${context.watch<Cart>().cart}'),
+                                      child: Text('${context.watch<Cart>().getItemQuantityInCart("${widget.itemId}")}'),
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        context.read<Cart>().addToCart();
+                                        context.read<Cart>().addToCart('${widget.itemId}');
                                       },
                                       borderRadius: BorderRadius.circular(40),
                                       radius: 40,
@@ -808,10 +809,11 @@ class _ItemCardState extends State<ItemCard> {
 
 class CanteenChipComponent extends StatelessWidget {
   const CanteenChipComponent({
-    Key? key, required this.text, required this.keyValue,
+    Key? key, required this.text, required this.keyValue, required this.canteenId,
   }) : super(key: key);
 
   final String? text;
+  final String? canteenId;
   final int? keyValue;
 
   @override
@@ -821,13 +823,13 @@ class CanteenChipComponent extends StatelessWidget {
       child: ChoiceChip(
         label: Text('$text'),
         labelStyle: TextStyle(fontSize: 12),
-        side: context.watch<Filter>().value == keyValue ? BorderSide(color: kPrimaryGreen) : BorderSide(color: Colors.grey.shade300),
+        side: context.watch<CanteenFilter>().value == keyValue ? BorderSide(color: kPrimaryGreen) : BorderSide(color: Colors.grey.shade300),
         selectedColor: kPrimaryGreenAccent,
         // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: kPrimaryGreen)),
         labelPadding: EdgeInsets.zero,
-        selected: context.watch<Filter>().value == keyValue,
+        selected: context.watch<CanteenFilter>().value == keyValue,
         onSelected: (bool selected) {
-          selected ? context.read<Filter>().updateValue(keyValue!) : null;
+          selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!) : null;
         },
       ),
     );

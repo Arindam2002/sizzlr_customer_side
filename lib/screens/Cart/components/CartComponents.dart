@@ -37,7 +37,7 @@ class CartSnackBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'You have ${context.watch<Cart>().cart} item${context.watch<Cart>().cart == 1 ? '' : 's'} in your cart',
+                      'You have ${context.watch<Cart>().currentCartItems.length} item${context.watch<Cart>().currentCartItems.length == 1 ? '' : 's'} in your cart',
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -164,10 +164,11 @@ class CartItem extends StatelessWidget {
     required this.itemName,
     required this.servedQuantity,
     required this.price,
-    required this.veg,
+    required this.veg, required this.itemId,
   }) : super(key: key);
 
   final String? itemName;
+  final String? itemId;
   final String? servedQuantity;
   final int? price;
   final bool? veg;
@@ -241,7 +242,7 @@ class CartItem extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          context.read<Cart>().removeFromCart();
+                          context.read<Cart>().removeFromCart('$itemId');
                         },
                         borderRadius: BorderRadius.circular(40),
                         radius: 40,
@@ -255,7 +256,7 @@ class CartItem extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14.0),
                         child: Text(
-                          '${context.watch<Cart>().cart}',
+                          '${context.watch<Cart>().getItemQuantityInCart('$itemId')}',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -265,7 +266,7 @@ class CartItem extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.read<Cart>().addToCart();
+                          context.read<Cart>().addToCart('$itemId');
                         },
                         borderRadius: BorderRadius.circular(40),
                         radius: 40,

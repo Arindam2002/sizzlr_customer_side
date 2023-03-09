@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '808579867426',
     projectId: 'sizzlr-fc828',
     storageBucket: 'sizzlr-fc828.appspot.com',
+    androidClientId: '808579867426-80kvdut4j8dfdjjnp1d37e6docj84tvp.apps.googleusercontent.com',
     iosClientId: '808579867426-gaj38rv6rukrg3o6ed8qoe7gu700lfeh.apps.googleusercontent.com',
     iosBundleId: 'com.sizzlr.sizzlrCustomerSide',
   );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/constants/constants.dart';
+import 'package:sizzlr_customer_side/providers/authProvider.dart';
 import 'package:sizzlr_customer_side/screens/Authentication/OtpVerificationScreen.dart';
 import 'package:sizzlr_customer_side/screens/Authentication/RegistrationScreen.dart';
 
@@ -20,6 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: kPrimaryGreenAccent,
       body: ModalProgressHUD(
@@ -126,7 +131,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await authProvider.signInWithGoogle();
+                                    },
+                                    child: Text('Sign In with Google'),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       )
