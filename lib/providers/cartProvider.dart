@@ -78,6 +78,29 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> placeOrder(String canteenId, Map<String, dynamic> data) async {
+    // add order to 'orders' collection for the canteen
+
+    // Temporary code, not gonna go ahead with this shit --------------------------------------
+    DocumentReference newOrderRef = FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens/$canteenId/orders(testing)').doc();
+
+    data.addAll({
+      'order_id': newOrderRef.id,
+    });
+
+    newOrderRef.set(data, SetOptions(merge: true));
+
+    for (var entry in _cartMap.entries) {
+      newOrderRef.collection('items').doc().set({
+        'item_id': entry.key,
+        'quantity_ordered': entry.value,
+      });
+    }
+
+
+    // ----------------------------------------------------------------------------------------
+  }
+
   void clearCartItemWidgetList() {
     _itemsWidgets.clear();
   }

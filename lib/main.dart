@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 15.0),
-          child: Image.asset('assets/images/sizzlr_logo.png'),
+          child: Image.asset('assets/images/splash-green.png'),
         ),
         actions: [
           Padding(

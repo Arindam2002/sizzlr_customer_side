@@ -48,7 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Hero(
                             tag: 'Logo',
                             child: Image.asset(
-                              'assets/images/sizzlr_logo.png',
+                              // 'assets/images/sizzlr_logo.png',
+                              'assets/images/splash-green.png',
                               scale: 6,
                             ),
                           ),
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               'A seamless canteen experience',
                               style: TextStyle(
-                                color: kPrimaryColor,
+                                color: kPrimaryGreen,
                                 fontSize: 10,
                               ),
                               textAlign: TextAlign.center,

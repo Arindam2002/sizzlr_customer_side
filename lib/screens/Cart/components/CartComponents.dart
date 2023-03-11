@@ -4,6 +4,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
 import 'package:sizzlr_customer_side/screens/Cart/CartScreen.dart';
@@ -571,9 +572,10 @@ class OrderingFromCanteen extends StatelessWidget {
 
 class CtaPayAmount extends StatelessWidget {
   const CtaPayAmount({
-    Key? key,
+    Key? key, required this.onPressed,
   }) : super(key: key);
 
+  final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -620,7 +622,7 @@ class CtaPayAmount extends StatelessWidget {
                     ),
                     backgroundColor:
                     MaterialStateProperty.all(kPrimaryGreen)),
-                onPressed: () {},
+                onPressed: onPressed,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
