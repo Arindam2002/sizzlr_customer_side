@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:sizzlr_customer_side/models/CartItemModel.dart';
 import '../../../constants/constants.dart';
 import '../../../providers/canteenFilterProvider.dart';
 import '../../../providers/cartProvider.dart';
@@ -738,7 +739,7 @@ class _ItemCardState extends State<ItemCard> {
                                       backgroundColor: MaterialStateProperty.all(
                                           kPrimaryGreen.withAlpha(20))),
                                   onPressed: () {
-                                    context.read<Cart>().addToCart('${widget.itemId}');
+                                    context.read<Cart>().addToCart('${widget.itemId}', widget.price!);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 14.0),
@@ -762,7 +763,7 @@ class _ItemCardState extends State<ItemCard> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        context.read<Cart>().removeFromCart('${widget.itemId}');
+                                        context.read<Cart>().removeFromCart('${widget.itemId}', widget.price!);
                                       },
                                       borderRadius: BorderRadius.circular(40),
                                       radius: 40,
@@ -779,7 +780,7 @@ class _ItemCardState extends State<ItemCard> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        context.read<Cart>().addToCart('${widget.itemId}');
+                                        context.read<Cart>().addToCart('${widget.itemId}', widget.price!);
                                       },
                                       borderRadius: BorderRadius.circular(40),
                                       radius: 40,
@@ -809,11 +810,12 @@ class _ItemCardState extends State<ItemCard> {
 
 class CanteenChipComponent extends StatelessWidget {
   const CanteenChipComponent({
-    Key? key, required this.text, required this.keyValue, required this.canteenId,
+    Key? key, required this.text, required this.keyValue, required this.canteenId, required this.canteenName,
   }) : super(key: key);
 
   final String? text;
   final String? canteenId;
+  final String? canteenName;
   final int? keyValue;
 
   @override
@@ -829,7 +831,34 @@ class CanteenChipComponent extends StatelessWidget {
         labelPadding: EdgeInsets.zero,
         selected: context.watch<CanteenFilter>().value == keyValue,
         onSelected: (bool selected) {
-          selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!) : null;
+          if (selected) {
+            if (context.read<Cart>().currentCartItems.isNotEmpty) {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content:
+                    Text('Switching to a different canteen will remove existing items in the cart. Discard items?'),
+                    contentPadding: EdgeInsets.only(
+                        top: 20, left: 24, right: 24),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('Cancel')),
+                      TextButton(
+                          onPressed: () {
+                            context.read<Cart>().discardCart();
+                            Navigator.pop(context);
+                            selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!, canteenName!) : null;
+                          },
+                          child: Text('Discard'))
+                    ],
+                  ));
+            } else if (context.read<Cart>().currentCartItems.isEmpty) {
+              selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!, canteenName!) : null;
+            }
+          }
         },
       ),
     );

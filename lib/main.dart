@@ -5,6 +5,7 @@ import 'package:sizzlr_customer_side/providers/authProvider.dart';
 import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
 import 'package:sizzlr_customer_side/providers/cartProvider.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
+import 'package:sizzlr_customer_side/providers/viewCartLoaderProvider.dart';
 import 'package:sizzlr_customer_side/screens/Authentication/LoginScreen.dart';
 import 'package:sizzlr_customer_side/screens/Home/HomeScreen.dart';
 import 'package:sizzlr_customer_side/screens/Home/ProfileScreen.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CanteenFilter()),
         ChangeNotifierProvider(create: (_) => Coupon()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ViewCartLoader()),
       ],
       child: MediaQuery(
       data: windowData,

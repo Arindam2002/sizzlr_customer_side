@@ -46,7 +46,7 @@ class CartSnackBar extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '₹300',
+                          '${context.read<Cart>().sumTotalMrp}',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -63,7 +63,8 @@ class CartSnackBar extends StatelessWidget {
                 Row(
                   children: [
                     MaterialButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await context.read<Cart>().createCartItemsWidgets(context.read<Cart>().currentCartItems, context.read<CanteenFilter>().selectedCanteenId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -128,7 +129,7 @@ class OrdersSectionInCart extends StatelessWidget {
     required this.cartItems,
   }) : super(key: key);
 
-  final List<Widget> cartItems;
+  final List<CartItem> cartItems;
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +243,7 @@ class CartItem extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          context.read<Cart>().removeFromCart('$itemId');
+                          context.read<Cart>().removeFromCart('$itemId', price!);
                         },
                         borderRadius: BorderRadius.circular(40),
                         radius: 40,
@@ -266,7 +267,7 @@ class CartItem extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.read<Cart>().addToCart('$itemId');
+                          context.read<Cart>().addToCart('$itemId', price!);
                         },
                         borderRadius: BorderRadius.circular(40),
                         radius: 40,
@@ -601,7 +602,7 @@ class CtaPayAmount extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '₹500',
+                    '₹${context.watch<Cart>().sumTotalMrp + 6}',
                     style: TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -638,79 +639,106 @@ class CtaPayAmount extends StatelessWidget {
 }
 
 class BillComponent extends StatelessWidget {
-  const BillComponent({
+  BillComponent({
     Key? key,
   }) : super(key: key);
 
+  int convenienceFee = 6;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: kBoxShadowList
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Item Total', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),),
-                Text('₹200', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF444547)),),
-              ],
-            ),
+    return Consumer<Cart>(
+      builder: (context, cartProvider, child) {
+        return Container(
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: kBoxShadowList
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Convenience fee', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),),
-                Text('+ ₹6', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF444547)),),
-              ],
-            ),
-          ),
-          context.watch<Coupon>().couponId.isNotEmpty ? Column(
+          child: Column(
             children: [
-              DottedLine(
-                direction: Axis.horizontal,
-                dashColor: Colors.black54.withAlpha(60),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.only(bottom: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Item Discount', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black54),),
-                    Text('- ₹30', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1ca672)),),
+                    Text('Item Total', style: TextStyle(fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54),),
+                    Text('₹${cartProvider
+                        .sumTotalMrp}', style: TextStyle(fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF444547)),),
                   ],
                 ),
-              )
-            ],
-          ) : Container(),
-          Column(
-            children: [
-              DottedLine(
-                direction: Axis.horizontal,
-                dashColor: Colors.black54.withAlpha(60),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(bottom: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('To Pay', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),),
-                    Text('₹210', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),),
+                    Text('Convenience fee', style: TextStyle(fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54),),
+                    Text('+ ₹$convenienceFee', style: TextStyle(fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF444547)),),
                   ],
                 ),
-              )
+              ),
+              context
+                  .watch<Coupon>()
+                  .couponId
+                  .isNotEmpty ? Column(
+                children: [
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    dashColor: Colors.black54.withAlpha(60),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Item Discount', style: TextStyle(fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),),
+                        Text('- ₹30', style: TextStyle(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1ca672)),),
+                      ],
+                    ),
+                  )
+                ],
+              ) : Container(),
+              Column(
+                children: [
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    dashColor: Colors.black54.withAlpha(60),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('To Pay',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight
+                              .bold, color: Colors.black),),
+                        Text('₹${cartProvider
+                            .sumTotalMrp + convenienceFee}',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight
+                              .bold, color: Colors.black),),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
