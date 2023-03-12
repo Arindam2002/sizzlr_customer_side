@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
@@ -69,7 +70,10 @@ class HomeScreen extends StatelessWidget {
                         }
                     ),
                   ),
-                  Header(title: 'Watchya feel like having?'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Header(title: 'Watchya feel like having?'),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: /*GridView.builder(
@@ -91,7 +95,8 @@ class HomeScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           // return Text('Unable to fetch categories at the moment!', style: TextStyle(color: Colors.red),);
-                          return CircularProgressIndicator();
+                          return Center(child: CircularProgressIndicator());
+                          // return Lottie.asset('assets/lottie/square_loader_lottie.json', width: 10);
                         }
                         final categories = snapshot.data!.docs;
                         final categoryList = categories.map((category) => CategoryItem(categoryName: category['name'], categoryId: category['category_id'],)).toList();
@@ -102,7 +107,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     )
                   ),
-                  Header(title: 'Order Again!'),
+                  // Header(title: 'Order Again!'),
                   // Container(
                   //   height: 310,
                   //   // color: Colors.black54,
