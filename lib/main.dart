@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:sizzlr_customer_side/providers/authProvider.dart';
-import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
+import 'package:sizzlr_customer_side/providers/canteenProvider.dart';
 import 'package:sizzlr_customer_side/providers/cartProvider.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
 import 'package:sizzlr_customer_side/providers/viewCartLoaderProvider.dart';
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Cart()),
-        ChangeNotifierProvider(create: (_) => CanteenFilter()),
+        ChangeNotifierProvider(create: (_) => CanteenProvider()),
         ChangeNotifierProvider(create: (_) => Coupon()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ViewCartLoader()),
@@ -56,6 +59,7 @@ class MyApp extends StatelessWidget {
             if (authProvider.user == null) {
               return LoginScreen();
             } else {
+              Provider.of<CanteenProvider>(context, listen: false).getCanteens();
               return MyHomePage();
             }
           },
@@ -78,24 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
-  List<Widget> _titleWidgetOptions = <Widget>[
-    Text(
-      'Menu',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-    ),
-    Text(
-      'Order',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-    ),
-    // Text(
-    //   'Budget Management',
-    //   style: TextStyle(color: kPrimaryGreen),
-    // ),
-    Text(
-      'Profile',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-    ),
-  ];
 
   List<Widget> _widgetOptions = <Widget>[
     Text('Index 0'),
@@ -107,6 +93,36 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  static Future<mongo.Db> connect() async {
+      final db = await mongo.Db.create(mongoUri);
+      await db.open();
+      inspect(db);
+      return db;
+  }
+
+  static Future<void> close(mongo.Db db) async {
+    try {
+      await db.close();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    connect();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override

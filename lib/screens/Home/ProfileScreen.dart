@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizzlr_customer_side/providers/canteenProvider.dart';
 import 'package:sizzlr_customer_side/screens/TermsAndConditions/TermsAndConditions.dart';
 import 'package:sizzlr_customer_side/screens/YourOrders/YourOrders.dart';
 
@@ -308,6 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: ElevatedButton(
                     onPressed: () {
                       authProvider.signOut();
+                      context.read<CanteenProvider>().resetCanteenProvider();
                     },
                     child: Text('Logout')),
               ),

@@ -6,11 +6,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
 import 'package:sizzlr_customer_side/screens/Cart/CartScreen.dart';
 
 import '../../../constants/constants.dart';
-import '../../../providers/canteenFilterProvider.dart';
+import '../../../providers/canteenProvider.dart';
 import '../../../providers/cartProvider.dart';
 
 class CartSnackBar extends StatelessWidget {
@@ -34,38 +35,42 @@ class CartSnackBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'You have ${context.watch<Cart>().currentCartItems.length} item${context.watch<Cart>().currentCartItems.length == 1 ? '' : 's'} in your cart',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '${context.read<Cart>().sumTotalMrp}',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          ' + convenience fee',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.black54,
+                Consumer<Cart>(builder: (context, cartProvider, child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'You have ${cartProvider.cart.length} item${cartProvider.cart.length == 1 ? '' : 's'} in your cart',
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '${cartProvider.sumTotalMrp}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                          const Text(
+                            ' + convenience fee',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                }),
                 Row(
                   children: [
                     MaterialButton(
                       onPressed: () async {
-                        await context.read<Cart>().createCartItemsWidgets(context.read<Cart>().currentCartItems, context.read<CanteenFilter>().selectedCanteenId);
+                        // print(context.read<Cart>().cart);
+                        // TODO: CREATE CART ITEMS WIDGETS
+                        // await context.read<Cart>().createCartItemsWidgets(context.read<Cart>().currentCartItems, context.read<CanteenProvider>().selectedCanteenId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -76,16 +81,16 @@ class CartSnackBar extends StatelessWidget {
                       height: 30,
                       minWidth: 60,
                       padding: EdgeInsets.zero,
-                      child: Text(
-                        'View',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
                       color: kPrimaryGreen,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)),
+                      child: const Text(
+                        'View',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
                     ),
                     IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.cancel_outlined,
                         size: 18,
                       ),
@@ -94,8 +99,8 @@ class CartSnackBar extends StatelessWidget {
                             context: context,
                             builder: (context) => AlertDialog(
                                   content:
-                                      Text('Discard all items in your cart?'),
-                                  contentPadding: EdgeInsets.only(
+                                  const Text('Discard all items in your cart?'),
+                                  contentPadding: const EdgeInsets.only(
                                       top: 20, left: 24, right: 24),
                                   actions: [
                                     TextButton(
@@ -130,7 +135,7 @@ class OrdersSectionInCart extends StatelessWidget {
     required this.cartItems,
   }) : super(key: key);
 
-  final List<CartItem> cartItems;
+  final List<dynamic> cartItems;
 
   @override
   Widget build(BuildContext context) {
@@ -149,10 +154,13 @@ class OrdersSectionInCart extends StatelessWidget {
                 border:
                     Border(top: BorderSide(color: kPrimaryGreen, width: 4))),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            child: ListView(
-              shrinkWrap: true,
-              children: cartItems,
-            ),
+            child: Consumer<Cart>(builder: (context, cartProvider, child) {
+              final items = cartProvider.cart.values.map((item) => CartItem(item: item[0])).toList();
+              return ListView(
+                shrinkWrap: true,
+                children: items,
+              );
+            }),
           ),
         ),
       ),
@@ -163,17 +171,10 @@ class OrdersSectionInCart extends StatelessWidget {
 class CartItem extends StatelessWidget {
   const CartItem({
     Key? key,
-    required this.itemName,
-    required this.servedQuantity,
-    required this.price,
-    required this.veg, required this.itemId,
+    required this.item,
   }) : super(key: key);
 
-  final String? itemName;
-  final String? itemId;
-  final String? servedQuantity;
-  final int? price;
-  final bool? veg;
+  final MenuItemModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -213,13 +214,13 @@ class CartItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$itemName',
+                          '${item.itemName}',
                           style: TextStyle(
                             fontSize: 12,
                           ),
                         ),
                         Text(
-                          'Serves: $servedQuantity',
+                          'Serves: ${item.servingQuantity}',
                           style: TextStyle(fontSize: 11, color: Colors.black54),
                         ),
                       ],
@@ -234,59 +235,62 @@ class CartItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 4.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Color(0xFFE3E2E7)),
+                    border: Border.all(color: const Color(0xFFE3E2E7)),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          context.read<Cart>().removeFromCart('$itemId', price!);
-                        },
-                        borderRadius: BorderRadius.circular(40),
-                        radius: 40,
-                        splashColor: kPrimaryGreen.withAlpha(20),
-                        child: Icon(
-                          Icons.remove_rounded,
-                          size: 16,
-                          color: kPrimaryGreen,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Text(
-                          '${context.watch<Cart>().getItemQuantityInCart('$itemId')}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                  child: Consumer<Cart>(builder: (context, cartProvider, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            cartProvider.removeItemFromCart(item.itemId.toString(), item.price!);
+                          },
+                          borderRadius: BorderRadius.circular(40),
+                          radius: 40,
+                          splashColor: kPrimaryGreen.withAlpha(20),
+                          child: Icon(
+                            Icons.remove_rounded,
+                            size: 16,
                             color: kPrimaryGreen,
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          context.read<Cart>().addToCart('$itemId', price!);
-                        },
-                        borderRadius: BorderRadius.circular(40),
-                        radius: 40,
-                        splashColor: kPrimaryGreen.withAlpha(20),
-                        child: Icon(
-                          Icons.add_rounded,
-                          size: 16,
-                          color: kPrimaryGreen,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                          child: Text(
+                            '${cartProvider.cart[item.itemId]![1]}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: kPrimaryGreen,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                        InkWell(
+                          onTap: () {
+                            // context.read<Cart>().addToCart('$itemId', price!);
+                            cartProvider.addItemToCart(item.itemId.toString(), item.price!, item);
+                          },
+                          borderRadius: BorderRadius.circular(40),
+                          radius: 40,
+                          splashColor: kPrimaryGreen.withAlpha(20),
+                          child: Icon(
+                            Icons.add_rounded,
+                            size: 16,
+                            color: kPrimaryGreen,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
-                  '₹$price',
+                  '₹${item.price}',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               )

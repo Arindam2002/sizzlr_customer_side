@@ -6,9 +6,12 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/models/CartItemModel.dart';
+import 'package:sizzlr_customer_side/models/CategoryModel.dart';
+import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
 import '../../../constants/constants.dart';
-import '../../../providers/canteenFilterProvider.dart';
+import '../../../providers/canteenProvider.dart';
 import '../../../providers/cartProvider.dart';
+import '../../CategoryItems/CategoryItemsScreen.dart';
 
 class AddItemDialog extends StatefulWidget {
   const AddItemDialog({Key? key}) : super(key: key);
@@ -499,7 +502,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 5),
-                        child: context.watch<Cart>().currentCartItems.isEmpty
+                        child: context.watch<Cart>().cart.isEmpty
                             ? OutlinedButton(
                                 style: ButtonStyle(
                                     surfaceTintColor: MaterialStateProperty.all(
@@ -589,7 +592,10 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Text(
         '$title',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -598,27 +604,16 @@ class Header extends StatelessWidget {
 class ItemCard extends StatefulWidget {
   const ItemCard({
     Key? key,
-    required this.dishName,
-    required this.quantity,
-    required this.estTime,
-    required this.price,
-    required this.imageUrl, required this.itemId,
+    required this.menu,
   }) : super(key: key);
 
-  final String? dishName;
-  final String? itemId;
-  final String? quantity;
-  final int? estTime;
-  final int? price;
-  final String? imageUrl;
+  final MenuItemModel menu;
 
   @override
   State<ItemCard> createState() => _ItemCardState();
 }
 
 class _ItemCardState extends State<ItemCard> {
-  bool switchVal = false;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -666,17 +661,18 @@ class _ItemCardState extends State<ItemCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.dishName}',
-                                  style: TextStyle(
+                                  '${widget.menu.itemName}',
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Text(
-                                    '${widget.quantity}',
-                                    style: TextStyle(
+                                    '${widget.menu.servingQuantity}',
+                                    style: const TextStyle(
                                         fontSize: 12, color: Colors.black54),
                                   ),
                                 ),
@@ -688,17 +684,17 @@ class _ItemCardState extends State<ItemCard> {
                             ),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.timer_outlined,
                                   color: Colors.black54,
                                   size: 14,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 2,
                                 ),
                                 Text(
-                                  '${widget.estTime} mins',
-                                  style: TextStyle(
+                                  '${widget.menu.preparationTime} mins',
+                                  style: const TextStyle(
                                       fontSize: 12, color: Colors.black54),
                                 ),
                               ],
@@ -709,93 +705,110 @@ class _ItemCardState extends State<ItemCard> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10),
-                                child: Text(
-                                  '₹ ${widget.price}',
-                                  style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                          context.watch<Cart>().getItemQuantityInCart('${widget.itemId}') == 0
-                              ? OutlinedButton(
-                                  style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 32)),
-                                      surfaceTintColor: MaterialStateProperty.all(
-                                          kPrimaryGreen),
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      )),
-                                      backgroundColor: MaterialStateProperty.all(
-                                          kPrimaryGreen.withAlpha(20))),
-                                  onPressed: () {
-                                    context.read<Cart>().addToCart('${widget.itemId}', widget.price!);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 14.0),
-                                    child: Text(
-                                      'ADD',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                    ),
+                      child: Consumer<Cart>(
+                          builder: (context, cartProvider, child) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    '₹ ${widget.menu.price}',
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                )
-                              : Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 11),
-                                decoration: BoxDecoration(
-                                    color: kPrimaryGreen.withAlpha(20),
-                                    borderRadius: BorderRadius.circular(8),
-                                    border:
-                                        Border.all(color: Color(0xFF666c63))),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        context.read<Cart>().removeFromCart('${widget.itemId}', widget.price!);
-                                      },
-                                      borderRadius: BorderRadius.circular(40),
-                                      radius: 40,
-                                      splashColor:
-                                          kPrimaryGreen.withAlpha(20),
-                                      child: Icon(
-                                        Icons.remove_rounded,
-                                        size: 24,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text('${context.watch<Cart>().getItemQuantityInCart("${widget.itemId}")}'),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        context.read<Cart>().addToCart('${widget.itemId}', widget.price!);
-                                      },
-                                      borderRadius: BorderRadius.circular(40),
-                                      radius: 40,
-                                      splashColor:
-                                          kPrimaryGreen.withAlpha(20),
-                                      child: Icon(
-                                        Icons.add_rounded,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ],
                                 ),
-                              )
-                        ],
-                      ),
+                              ],
+                            ),
+                            !cartProvider.cart.containsKey(widget.menu.itemId.toString())
+                                ? OutlinedButton(
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 32)),
+                                        surfaceTintColor:
+                                            MaterialStateProperty.all(
+                                                kPrimaryGreen),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                kPrimaryGreen.withAlpha(20))),
+                                    onPressed: () {
+                                      cartProvider.addItemToCart(widget.menu.itemId.toString(), widget.menu.price!, widget.menu);
+                                    },
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 14.0),
+                                      child: Text(
+                                        'ADD',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 11),
+                                    decoration: BoxDecoration(
+                                        color: kPrimaryGreen.withAlpha(20),
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: Color(0xFF666c63))),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            // context.read<Cart>().removeFromCart('${widget.menu.itemId}', widget.menu.price!);
+                                            cartProvider.removeItemFromCart(widget.menu.itemId.toString(), widget.menu.price!);
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          radius: 40,
+                                          splashColor:
+                                              kPrimaryGreen.withAlpha(20),
+                                          child: const Icon(
+                                            Icons.remove_rounded,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Text(
+                                              '${cartProvider.cart[widget.menu.itemId.toString()]![1]}'),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            cartProvider
+                                                .addItemToCart(widget.menu.itemId.toString(), widget.menu.price!, widget.menu);
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          radius: 40,
+                                          splashColor:
+                                              kPrimaryGreen.withAlpha(20),
+                                          child: const Icon(
+                                            Icons.add_rounded,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                          ],
+                        );
+                      }),
                     )
                   ],
                 ),
@@ -810,7 +823,11 @@ class _ItemCardState extends State<ItemCard> {
 
 class CanteenChipComponent extends StatelessWidget {
   const CanteenChipComponent({
-    Key? key, required this.text, required this.keyValue, required this.canteenId, required this.canteenName,
+    Key? key,
+    required this.text,
+    required this.keyValue,
+    required this.canteenId,
+    required this.canteenName,
   }) : super(key: key);
 
   final String? text;
@@ -823,43 +840,113 @@ class CanteenChipComponent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: ChoiceChip(
-        label: Text('$text'),
+        label: Text('${text}'),
         labelStyle: TextStyle(fontSize: 12),
-        side: context.watch<CanteenFilter>().value == keyValue ? BorderSide(color: kPrimaryGreen) : BorderSide(color: Colors.grey.shade300),
+        side: context.watch<CanteenProvider>().value == keyValue
+            ? BorderSide(color: kPrimaryGreen)
+            : BorderSide(color: Colors.grey.shade300),
         selectedColor: kPrimaryGreenAccent,
         // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: kPrimaryGreen)),
         labelPadding: EdgeInsets.zero,
-        selected: context.watch<CanteenFilter>().value == keyValue,
+        selected: context.watch<CanteenProvider>().value == keyValue,
         onSelected: (bool selected) {
           if (selected) {
-            if (context.read<Cart>().currentCartItems.isNotEmpty) {
+            if (context.read<Cart>().cart.isNotEmpty) {
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    content:
-                    Text('Switching to a different canteen will remove existing items in the cart. Discard items?'),
-                    contentPadding: EdgeInsets.only(
-                        top: 20, left: 24, right: 24),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel')),
-                      TextButton(
-                          onPressed: () {
-                            context.read<Cart>().discardCart();
-                            Navigator.pop(context);
-                            selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!, canteenName!) : null;
-                          },
-                          child: Text('Discard'))
-                    ],
-                  ));
-            } else if (context.read<Cart>().currentCartItems.isEmpty) {
-              selected ? context.read<CanteenFilter>().updateValue(keyValue!, canteenId!, canteenName!) : null;
+                        content: Text(
+                            'Switching to a different canteen will remove existing items in the cart. Discard items?'),
+                        contentPadding:
+                            EdgeInsets.only(top: 20, left: 24, right: 24),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancel')),
+                          TextButton(
+                              onPressed: () {
+                                context.read<Cart>().discardCart();
+                                Navigator.pop(context);
+                                selected
+                                    ? context
+                                        .read<CanteenProvider>()
+                                        .updateValue(
+                                            keyValue!, canteenId!, canteenName!)
+                                    : null;
+                              },
+                              child: Text('Discard'))
+                        ],
+                      ));
+            } else if (context.read<Cart>().cart.isEmpty) {
+              selected
+                  ? context
+                      .read<CanteenProvider>()
+                      .updateValue(keyValue!, canteenId!, canteenName!)
+                  : null;
             }
           }
         },
+      ),
+    );
+  }
+}
+
+class CategoryItem extends StatelessWidget {
+  const CategoryItem({
+    Key? key,
+    required this.category,
+    required this.canteenId,
+  }) : super(key: key);
+
+  final CategoryModel category;
+  final String canteenId;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Provider.of<CanteenProvider>(context, listen: false)
+            .getMenuItemsInCategory(canteenId, category.categoryId);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryItemsScreen(
+              selectedCategory: category,
+            ),
+          ),
+        );
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: AssetImage(
+              'assets/images/fries.jpg',
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              width: 120,
+              child: ClipRRect(
+                child: Text(
+                  '${category.categoryName}',
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

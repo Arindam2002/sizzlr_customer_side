@@ -20,14 +20,14 @@ class MyOrderCard extends StatelessWidget {
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8), topRight: Radius.circular(8)),
             child: Container(
               color: Color(0x99f0f0f0),
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -36,15 +36,16 @@ class MyOrderCard extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Expanded(
-                            child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            'H3 Canteen',
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'H3 Canteen',
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ))
+                        )
                       ],
                     ),
                   ),
@@ -57,9 +58,8 @@ class MyOrderCard extends StatelessWidget {
                         Timer(Duration(seconds: 2), () {
                           tooltipkey.currentState?.deactivate();
                         });
-
                       },
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 5,
                         backgroundColor: Color(0xFFFFDB58),
                       ),

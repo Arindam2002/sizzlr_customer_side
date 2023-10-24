@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
+import 'package:sizzlr_customer_side/models/CanteenModel.dart';
+import 'package:sizzlr_customer_side/providers/canteenProvider.dart';
 import 'package:sizzlr_customer_side/providers/cartProvider.dart';
 import 'package:sizzlr_customer_side/screens/CategoryItems/CategoryItemsScreen.dart';
 import '../../constants/constants.dart';
@@ -18,22 +19,10 @@ class HomeScreen extends StatelessWidget {
 
   final CollectionReference institutes = FirebaseFirestore.instance.collection('Institutes');
 
-  void bleh() async {
-    // print(institutes.doc().set({
-    //   'name': 'name',
-    //   'email': '_auth.currentUser?.email',
-    //   'address': 'address',
-    //   'mobile number': 'phoneNumber',
-    //   'uid': '_auth.currentUser?.uid',
-    //   'password': 'password',
-    //   'tag': 'CLIENT',
-    // }));
-    institutes.where('institute_id', isEqualTo: 'vnXWKG5bgQYrRl1bTEeQ');
-  }
-
   @override
   Widget build(BuildContext context) {
-    bleh();
+    // context.read<Cart>().cartItems.forEach((key, value) {print('Cart: ${key.itemName}: $value');});
+
     return ModalProgressHUD(
       inAsyncCall: context.watch<ViewCartLoader>().isLoading,
       child: Scaffold(
@@ -44,91 +33,104 @@ class HomeScreen extends StatelessWidget {
               child: ListView(
                 // TODO: Convert to ListView.builder() and get canteens from backend
                 children: [
+                  // // Firebase Stuff
+                  // SizedBox(
+                  //   height: 50,
+                  //   child: StreamBuilder<QuerySnapshot>(
+                  //       stream: FirebaseFirestore.instance.collection(
+                  //           'institutions')
+                  //           .doc('X9ydF3xqSTtwR2lBmcUN')
+                  //           .collection('canteens')
+                  //           .snapshots(),
+                  //       builder: (context, snapshot) {
+                  //         if (!snapshot.hasData) {
+                  //           return Center(child: Text('Loading canteens...', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: Colors.black54),));
+                  //         }
+                  //         final canteens = snapshot.data!.docs;
+                  //         final canteensList = canteens.map((canteen) =>
+                  //             CanteenChipComponent(text: canteen['name'],
+                  //                 keyValue: canteen['canteen_id'].hashCode, canteenId: canteen['canteen_id'], canteenName: canteen['name'],))
+                  //             .toList();
+                  //         return ListView(
+                  //           dragStartBehavior: DragStartBehavior.down,
+                  //           scrollDirection: Axis.horizontal,
+                  //           shrinkWrap: true,
+                  //           children: canteensList,
+                  //         );
+                  //       }
+                  //   ),
+                  // ),
+
                   SizedBox(
                     height: 50,
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collection(
-                            'institutions')
-                            .doc('X9ydF3xqSTtwR2lBmcUN')
-                            .collection('canteens')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(child: Text('Loading canteens...', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: Colors.black54),));
-                          }
-                          final canteens = snapshot.data!.docs;
-                          final canteensList = canteens.map((canteen) =>
-                              CanteenChipComponent(text: canteen['name'],
-                                  keyValue: canteen['canteen_id'].hashCode, canteenId: canteen['canteen_id'], canteenName: canteen['name'],))
-                              .toList();
-                          return ListView(
-                            dragStartBehavior: DragStartBehavior.down,
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children: canteensList,
-                          );
-                        }
-                    ),
+                    child: Consumer<CanteenProvider>(builder: (context, canteenProvider, child) {
+                      // if (canteenProvider.canteens.isNotEmpty) {
+                      //   CanteenModel firstCanteen = canteenProvider.canteens.first;
+                      //   context.read<CanteenProvider>().updateValue(firstCanteen.canteenId.hashCode, firstCanteen.canteenId!, firstCanteen.name!);
+                      // }
+                      final canteensList = canteenProvider.canteens.map((canteen) =>
+                          CanteenChipComponent(text: canteen.name,
+                            keyValue: canteen.canteenId.hashCode,
+                            canteenId: canteen.canteenId,
+                            canteenName: '${canteen.name}',
+                          ),
+                      ).toList();
+                      return canteenProvider.canteens.isNotEmpty ? ListView(
+                        dragStartBehavior: DragStartBehavior.down,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        children: canteensList,
+                      ) : Center(child: Text('Loading canteens...', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: Colors.black54),));
+                    },),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Header(title: 'Watchya feel like having?'),
                   ),
+
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: /*GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                      ),
-                      itemCount: 9,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CategoryItem(
-                          categoryName: 'Snacks',
-                        );
-                      },
-                    ),*/
-                    StreamBuilder<QuerySnapshot>(
-                      // stream: FirebaseFirestore.instance.collection('institutions').doc('X9ydF3xqSTtwR2lBmcUN').collection('canteens').doc(Provider.of<CanteenFilter>(context, listen: false).selectedCanteenId),
-                      stream: FirebaseFirestore.instance.collection('categories').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          // return Text('Unable to fetch categories at the moment!', style: TextStyle(color: Colors.red),);
-                          return Center(child: CircularProgressIndicator());
-                          // return Lottie.asset('assets/lottie/square_loader_lottie.json', width: 10);
-                        }
-                        final categories = snapshot.data!.docs;
-                        final categoryList = categories.map((category) => CategoryItem(categoryName: category['name'], categoryId: category['category_id'],)).toList();
+                    padding: EdgeInsets.only(bottom: 15.0),
+                    child:
+                    Consumer<CanteenProvider>(builder: (context, canteenProvider, child) {
+                      String selectedCanteen = canteenProvider.selectedCanteenId;
+
+                      if (selectedCanteen == '') {
+                        return const Center(child: Text('Please Select a canteen'));
+                      } else if (!canteenProvider.categoriesInCanteen.containsKey(selectedCanteen)) {
+                        canteenProvider.getCategoriesInCanteen(selectedCanteen);
+                      }
+
+                      if (canteenProvider.isFetchingCategories) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (canteenProvider.categoriesInCanteen[selectedCanteen] == null) {
+                        return const Center(child: Text('Failed to load categories'));
+                      } else if (canteenProvider.categoriesInCanteen[selectedCanteen]!.isEmpty) {
+                        return const Center(child: Text('No categories in this canteen'));
+                      } else {
+                        final categoryList = canteenProvider.categoriesInCanteen[selectedCanteen]!
+                            .map((category) => CategoryItem(
+                          category: category,
+                          canteenId: selectedCanteen,
+                        ))
+                            .toList();
                         return Wrap(
                           runSpacing: 20,
                           children: categoryList,
                         );
-                      },
-                    )
+                      }
+                    })
                   ),
-                  // Header(title: 'Order Again!'),
-                  // Container(
-                  //   height: 310,
-                  //   // color: Colors.black54,
-                  //   child: ListView(
-                  //     padding: const EdgeInsets.symmetric(vertical: 5),
-                  //     scrollDirection: Axis.horizontal,
-                  //     shrinkWrap: true,
-                  //     children: [
-                  //       for (int i = 0; i < 6; i++) HeightRectangularItemCard(),
-                  //     ],
-                  //   ),
-                  // ),
-                  SizedBox(
+
+                  const SizedBox(
                     height: 100,
                   )
                 ],
               ),
             ),
-            context.watch<Cart>().currentCartItems.isEmpty
+            context.watch<Cart>().cart.isEmpty
                 ? Container()
-                : CartSnackBar(),
+                : const CartSnackBar(),
           ],
         ),
       ),
@@ -136,57 +138,3 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    Key? key,
-    required this.categoryName, required this.categoryId,
-  }) : super(key: key);
-
-  final String? categoryName;
-  final String? categoryId;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                CategoryItemsScreen(categoryName: '$categoryName', categoryId: '$categoryId',),
-          ),
-        );
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundImage: AssetImage(
-              'assets/images/fries.jpg',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
-              width: 120,
-              child: ClipRRect(
-                child: Text(
-                  '$categoryName',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold,
-                      height: 1.2),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}

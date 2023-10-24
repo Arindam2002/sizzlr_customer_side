@@ -1,112 +1,109 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sizzlr_customer_side/providers/canteenFilterProvider.dart';
-import 'package:sizzlr_customer_side/screens/Cart/components/CartComponents.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart';
+import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
+import '../constants/constants.dart';
 
 class Cart with ChangeNotifier {
   Map<String, int> _cartMap = {};
   int _total = 0;
-  List<CartItem> _itemsWidgets = <CartItem>[];
+  Map<String, List> _cart = {};
 
   Map<String, int> get currentCartItems => _cartMap;
   int get sumTotalMrp => _total;
-  List<CartItem> get cartItemWidgetList => _itemsWidgets;
+  Map<String, List> get cart => _cart;
 
-  void addToCart(String itemId, int price) {
-    _cartMap[itemId] = (_cartMap[itemId] ?? 0) + 1;
+  void addItemToCart(String itemId, int price, MenuItemModel item) {
     _total = _total + price;
 
+    if (!_cart.containsKey(itemId)) {
+      _cart[itemId] = [item, 1];
+    } else {
+      _cart[itemId]![1] = _cart[itemId]![1] + 1;
+    }
+    print(_cart);
     notifyListeners();
   }
 
-  void removeFromCart(String itemId, int price) {
-    
-    _cartMap[itemId] = (_cartMap[itemId] ?? 0) - 1;
+  void removeItemFromCart(String itemId, int price) {
     _total = _total - price;
-    
-    if (_cartMap[itemId]! <= 0) {
-      _cartMap.remove(itemId);
-      late CartItem b = const CartItem(itemName: '', servedQuantity: '', price: 0, veg: true, itemId: '');
-      // for (var a in _itemsWidgets.where((element) => element.itemId == itemId)) {
-      //   b = a;
-      // }
-      // _itemsWidgets.remove(b);
-      _itemsWidgets.removeWhere((element) => element.itemId == itemId);
-      print(_itemsWidgets);
+
+    _cart[itemId]![1] = _cart[itemId]![1] - 1;
+    if (_cart[itemId]![1] <= 0) {
+      _cart.remove(itemId);
     }
 
     notifyListeners();
-  }
-
-  int? getItemQuantityInCart(String itemId) {
-    return _cartMap.containsKey(itemId) ? _cartMap[itemId] : 0;
   }
 
   void discardCart() {
-    _cartMap.clear();
     _total = 0;
-    _itemsWidgets.clear();
+    _cart.clear();
 
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> getItemDetails(String itemId, String canteenId) async {
-    final snapshot = await FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens/$canteenId/menu/').doc(itemId).get();
-    return snapshot.data()!;
-  }
+  // Place order to the canteen
+  Future<void> placeOrder(String customerId, String canteenId) async {
+    const String apiEndpoint = '$baseUrl/place-order';
 
-  // A function to create a list of CartItemWidgets from a cartItems map
-  Future<void> createCartItemsWidgets(Map<String, int> cartItems, String canteenId) async {
-    // final itemsWidgets = <CartItem>[];
-    for (final entry in cartItems.entries) {
-      final itemId = entry.key;
-      final quantity = entry.value;
-      final itemDetails = await getItemDetails(itemId, canteenId);
-      final itemWidget = CartItem(itemName: itemDetails['name'], servedQuantity: itemDetails['quantity'], price: itemDetails['price'], veg: itemDetails['is_veg'], itemId: itemDetails['item_id']);
-      // CartItemWidget(
-      //   name: itemDetails['name'],
-      //   serving: itemDetails['standard_serving'],
-      //   quantity: quantity,
-      //   price: itemDetails['price'].toDouble(),
-      // );
-      if (!_itemsWidgets.contains(itemWidget)) {
-        _itemsWidgets.add(itemWidget);
+    List<Map<String, dynamic>> items = _cart.entries.map((e) => {
+      'item_id': e.key,
+      'quantity': e.value[1],
+      'amount': e.value[0].price,
+    }).toList();
+    print(items);
+
+    final Map<String, dynamic> body = {
+      'customerId': customerId,
+      'canteenId': canteenId,
+      'items': items,
+    };
+
+    final Response response = await post(
+      Uri.parse(apiEndpoint),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 201) {
+      if (kDebugMode) {
+        print('Order placed successfully');
+      }
+      discardCart();
+    } else {
+      if (kDebugMode) {
+        print('Order placement failed');
       }
     }
-
-    notifyListeners();
   }
-
-  Future<void> placeOrder(String canteenId, Map<String, dynamic> data) async {
-    // add order to 'orders' collection for the canteen
-
-    // Temporary code, not gonna go ahead with this shit --------------------------------------
-    DocumentReference newOrderRef = FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens/$canteenId/orders(testing)').doc();
-
-    data.addAll({
-      'order_id': newOrderRef.id,
-    });
-
-    newOrderRef.set(data, SetOptions(merge: true));
-
-    for (var entry in _cartMap.entries) {
-      newOrderRef.collection('items').doc().set({
-        'item_id': entry.key,
-        'quantity_ordered': entry.value,
-      });
-    }
-
-
-    // ----------------------------------------------------------------------------------------
-  }
-
-  void clearCartItemWidgetList() {
-    _itemsWidgets.clear();
-  }
-
-  // Future<String> getCanteenName(String canteenId) async {
-  //   DocumentSnapshot targetDoc = await FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens').doc(canteenId).get();
-  //   return targetDoc.get('name');
-  // }
 }
+
+// Future<Map<String, dynamic>> getItemDetails(String itemId, String canteenId) async {
+//   final snapshot = await FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens/$canteenId/menu/').doc(itemId).get();
+//   return snapshot.data()!;
+// }
+
+// Future<void> placeOrder(String canteenId, Map<String, dynamic> data) async {
+//   // add order to 'orders' collection for the canteen
+//
+//   // Temporary code, not gonna go ahead with this shit --------------------------------------
+//   DocumentReference newOrderRef = FirebaseFirestore.instance.collection('institutions/X9ydF3xqSTtwR2lBmcUN/canteens/$canteenId/orders(testing)').doc();
+//
+//   data.addAll({
+//     'order_id': newOrderRef.id,
+//   });
+//
+//   newOrderRef.set(data, SetOptions(merge: true));
+//
+//   for (var entry in _cartMap.entries) {
+//     newOrderRef.collection('items').doc().set({
+//       'item_id': entry.key,
+//       'quantity_ordered': entry.value,
+//     });
+//   }
+//
+// }
