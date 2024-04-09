@@ -54,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
                   const ApplyCouponComponent(),
                   const Header(title: 'Bill Details'),
                   BillComponent(),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
@@ -87,7 +87,7 @@ class _CartScreenState extends State<CartScreen> {
                   Provider.of<CanteenProvider>(context, listen: false).selectedCanteenId,
                   '653656fb440dfeb068ea3832',
                 );
-                Navigator.push(context, MaterialPageRoute(builder: (context) => WaitingForOrderConfirmationScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const WaitingForOrderConfirmationScreen()));
                 setState(() {
                   isLoading = false;
                 });

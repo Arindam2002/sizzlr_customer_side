@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/models/CategoryModel.dart';
-import 'package:sizzlr_customer_side/providers/authProvider.dart';
 import 'package:sizzlr_customer_side/providers/canteenProvider.dart';
-import 'package:sizzlr_customer_side/providers/viewCartLoaderProvider.dart';
 import 'package:sizzlr_customer_side/screens/Home/components/components.dart';
 
 import '../../providers/cartProvider.dart';
@@ -59,7 +55,7 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
               return Center(child: Text('No items in category id: ${widget.selectedCategory.categoryId}'));
             } else {
               return ListView(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 children: itemCardList,
               );
             }
@@ -67,7 +63,7 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
 
           context.watch<Cart>().cart.isEmpty
               ? Container()
-              : CartSnackBar(),
+              : const CartSnackBar(),
         ],
       ),
     );

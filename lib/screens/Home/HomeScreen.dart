@@ -1,15 +1,10 @@
-import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:sizzlr_customer_side/models/CanteenModel.dart';
 import 'package:sizzlr_customer_side/providers/canteenProvider.dart';
 import 'package:sizzlr_customer_side/providers/cartProvider.dart';
-import 'package:sizzlr_customer_side/screens/CategoryItems/CategoryItemsScreen.dart';
-import '../../constants/constants.dart';
 import '../../providers/viewCartLoaderProvider.dart';
 import '../Cart/components/CartComponents.dart';
 import 'components/components.dart';
@@ -80,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         children: canteensList,
-                      ) : Center(child: Text('Loading canteens...', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: Colors.black54),));
+                      ) : const Center(child: Text('Loading canteens...', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12, color: Colors.black54),));
                     },),
                   ),
 
@@ -90,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 15.0),
                     child:
                     Consumer<CanteenProvider>(builder: (context, canteenProvider, child) {
                       String selectedCanteen = canteenProvider.selectedCanteenId;

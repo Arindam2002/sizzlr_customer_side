@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/constants/constants.dart';
 import 'package:sizzlr_customer_side/providers/authProvider.dart';
 import 'package:sizzlr_customer_side/screens/Authentication/OtpVerificationScreen.dart';
-import 'package:sizzlr_customer_side/screens/Authentication/RegistrationScreen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -67,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
@@ -91,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                       return null;
                                     },
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                     decoration: kFormFieldDecoration.copyWith(
                                       labelText: 'Mobile Number',
                                     )),
@@ -128,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         }
                                       }
                                     },
-                                    child: Text('Get OTP'),
+                                    child: const Text('Get OTP'),
                                   ),
                                 ),
                               ],
@@ -146,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         loading = false;
                                       });
                                     },
-                                    child: Text('Sign In with Google'),
+                                    child: const Text('Sign In with Google'),
                                   ),
                                 ),
                               ],

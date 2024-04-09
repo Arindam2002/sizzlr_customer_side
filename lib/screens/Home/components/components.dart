@@ -1,11 +1,9 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:sizzlr_customer_side/models/CartItemModel.dart';
 import 'package:sizzlr_customer_side/models/CategoryModel.dart';
 import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
 import '../../../constants/constants.dart';
@@ -44,13 +42,13 @@ class _AddItemDialogState extends State<AddItemDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      actionsPadding: EdgeInsets.symmetric(horizontal: 0),
-      titlePadding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
-      contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 0),
+      titlePadding: const EdgeInsets.only(left: 0, right: 0, bottom: 20),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       title: const Text('Add item'),
       content: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
@@ -66,7 +64,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Name', hintText: 'Ex. Aloo Paratha')),
           ),
@@ -83,7 +81,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Quantity', hintText: 'Ex. 1 paratha')),
           ),
@@ -101,7 +99,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Estimated time (in minutes)',
                     hintText: 'Ex. 10 min')),
@@ -120,7 +118,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Price', hintText: 'Ex. 15')),
           ),
@@ -139,7 +137,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                         color: Colors.grey.shade200,
                       ),
                       child: image?.path == null
-                          ? Icon(
+                          ? const Icon(
                               Icons.image_outlined,
                               color: Colors.grey,
                             )
@@ -155,14 +153,14 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 onPressed: () {
                   pickImage(context);
                 },
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(
                       Icons.attach_file,
                       size: 18,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 5.0),
+                      padding: EdgeInsets.only(left: 5.0),
                       child: Text(
                         'Add Image',
                       ),
@@ -235,13 +233,13 @@ class _EditItemDialogState extends State<EditItemDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      actionsPadding: EdgeInsets.symmetric(horizontal: 0),
-      titlePadding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
-      contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 0),
+      titlePadding: const EdgeInsets.only(left: 0, right: 0, bottom: 20),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       title: const Text('Edit item'),
       content: ListView(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
@@ -258,7 +256,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Name', hintText: 'Ex. Aloo Paratha')),
           ),
@@ -276,7 +274,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Quantity', hintText: 'Ex. 1 paratha')),
           ),
@@ -295,7 +293,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Estimated time (in minutes)',
                     hintText: 'Ex. 10 min')),
@@ -315,7 +313,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
                   }
                   return null;
                 },
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 decoration: kFormFieldDecoration.copyWith(
                     labelText: 'Price', hintText: 'Ex. 15')),
           ),
@@ -334,7 +332,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
                         color: Colors.grey.shade200,
                       ),
                       child: image?.path == null
-                          ? Icon(
+                          ? const Icon(
                               Icons.image_outlined,
                               color: Colors.grey,
                             )
@@ -351,14 +349,14 @@ class _EditItemDialogState extends State<EditItemDialog> {
                 onPressed: () {
                   pickImage(context);
                 },
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(
                       Icons.attach_file,
                       size: 18,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 5.0),
+                      padding: EdgeInsets.only(left: 5.0),
                       child: Text(
                         'Add Image',
                       ),
@@ -412,7 +410,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                 color: Colors.grey.withOpacity(0.05),
                 spreadRadius: 1,
                 blurRadius: 4,
-                offset: Offset(2, 2),
+                offset: const Offset(2, 2),
               ),
             ],
           ),
@@ -439,7 +437,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                       ],
                     ),
                     // PRODUCT INFO
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 10.0, right: 10, top: 5),
                       child: Wrap(
                         children: [
@@ -453,9 +451,9 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                         ],
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding:
-                          const EdgeInsets.only(left: 10.0, right: 10, top: 10),
+                          EdgeInsets.only(left: 10.0, right: 10, top: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -469,7 +467,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 3),
+                                    EdgeInsets.symmetric(horizontal: 3),
                                 child: Text(
                                   '15 min',
                                   style: TextStyle(
@@ -516,20 +514,20 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                 onPressed: () {
                                   // context.read<Cart>().addToCart();
                                 },
-                                child: Text(
+                                child: const Text(
                                   'ADD',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ))
                             : Padding(
                                 padding: const EdgeInsets.only(bottom: 2.0),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 8),
                                   decoration: BoxDecoration(
                                       color: kPrimaryGreen.withAlpha(20),
                                       borderRadius: BorderRadius.circular(8),
                                       border:
-                                          Border.all(color: Color(0xFF666c63))),
+                                          Border.all(color: const Color(0xFF666c63))),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -542,7 +540,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                         radius: 40,
                                         splashColor:
                                             kPrimaryGreen.withAlpha(20),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.remove_rounded,
                                           size: 24,
                                         ),
@@ -556,7 +554,7 @@ class _HeightRectangularItemCardState extends State<HeightRectangularItemCard> {
                                         radius: 40,
                                         splashColor:
                                             kPrimaryGreen.withAlpha(20),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.add_rounded,
                                           size: 24,
                                         ),
@@ -592,7 +590,7 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Text(
         '$title',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
@@ -762,7 +760,7 @@ class _ItemCardState extends State<ItemCard> {
                                         color: kPrimaryGreen.withAlpha(20),
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
-                                            color: Color(0xFF666c63))),
+                                            color: const Color(0xFF666c63))),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -840,8 +838,8 @@ class CanteenChipComponent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: ChoiceChip(
-        label: Text('${text}'),
-        labelStyle: TextStyle(fontSize: 12),
+        label: Text('$text'),
+        labelStyle: const TextStyle(fontSize: 12),
         side: context.watch<CanteenProvider>().value == keyValue
             ? BorderSide(color: kPrimaryGreen)
             : BorderSide(color: Colors.grey.shade300),
@@ -855,16 +853,16 @@ class CanteenChipComponent extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        content: Text(
+                        content: const Text(
                             'Switching to a different canteen will remove existing items in the cart. Discard items?'),
                         contentPadding:
-                            EdgeInsets.only(top: 20, left: 24, right: 24),
+                            const EdgeInsets.only(top: 20, left: 24, right: 24),
                         actions: [
                           TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text('Cancel')),
+                              child: const Text('Cancel')),
                           TextButton(
                               onPressed: () {
                                 context.read<Cart>().discardCart();
@@ -876,7 +874,7 @@ class CanteenChipComponent extends StatelessWidget {
                                             keyValue!, canteenId!, canteenName!)
                                     : null;
                               },
-                              child: Text('Discard'))
+                              child: const Text('Discard'))
                         ],
                       ));
             } else if (context.read<Cart>().cart.isEmpty) {
@@ -921,7 +919,7 @@ class CategoryItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 40,
             backgroundImage: AssetImage(
               'assets/images/fries.jpg',
@@ -934,7 +932,7 @@ class CategoryItem extends StatelessWidget {
               child: ClipRRect(
                 child: Text(
                   '${category.categoryName}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 12,
                       color: Colors.black54,
                       fontWeight: FontWeight.bold,

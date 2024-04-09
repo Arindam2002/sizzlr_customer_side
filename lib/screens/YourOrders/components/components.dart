@@ -23,8 +23,8 @@ class MyOrderCard extends StatelessWidget {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8), topRight: Radius.circular(8)),
             child: Container(
-              color: Color(0x99f0f0f0),
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              color: const Color(0x99f0f0f0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Row(
                 children: [
                   const Expanded(
@@ -37,7 +37,7 @@ class MyOrderCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                            padding: EdgeInsets.only(left: 8.0),
                             child: Text(
                               'H3 Canteen',
                               style: TextStyle(
@@ -55,7 +55,7 @@ class MyOrderCard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         tooltipkey.currentState?.ensureTooltipVisible();
-                        Timer(Duration(seconds: 2), () {
+                        Timer(const Duration(seconds: 2), () {
                           tooltipkey.currentState?.deactivate();
                         });
                       },
@@ -70,8 +70,8 @@ class MyOrderCard extends StatelessWidget {
             ),
           ),
           ListView(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             shrinkWrap: true,
             children: [
               Padding(
@@ -84,13 +84,13 @@ class MyOrderCard extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 3.0),
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(color: Colors.green),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.circle,
                           size: 8,
                           color: Colors.green,
@@ -106,7 +106,7 @@ class MyOrderCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
-                                text: TextSpan(children: [
+                                text: const TextSpan(children: [
                               TextSpan(
                                 text: 'itemName ',
                                 style: TextStyle(
@@ -120,7 +120,7 @@ class MyOrderCard extends StatelessWidget {
                                     color: Colors.black54),
                               ),
                             ])),
-                            Text(
+                            const Text(
                               'Serves: 2 pc.s',
                               style: TextStyle(
                                   fontSize: 11, color: Colors.black54),
@@ -142,13 +142,13 @@ class MyOrderCard extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 3.0),
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(color: Colors.green),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.circle,
                           size: 8,
                           color: Colors.green,
@@ -164,7 +164,7 @@ class MyOrderCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
-                                text: TextSpan(children: [
+                                text: const TextSpan(children: [
                               TextSpan(
                                 text: 'itemName ',
                                 style: TextStyle(
@@ -178,7 +178,7 @@ class MyOrderCard extends StatelessWidget {
                                     color: Colors.black54),
                               ),
                             ])),
-                            Text(
+                            const Text(
                               'Serves: 2 pc.s',
                               style: TextStyle(
                                   fontSize: 11, color: Colors.black54),
@@ -190,18 +190,18 @@ class MyOrderCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               DottedLine(
                 direction: Axis.horizontal,
                 dashColor: Colors.black54.withAlpha(60),
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
                       '01 Jan 2023 at 8:02AM',
                       style: TextStyle(
@@ -211,7 +211,7 @@ class MyOrderCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
                       '₹200',
                       style: TextStyle(

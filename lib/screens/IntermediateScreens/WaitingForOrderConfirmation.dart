@@ -10,7 +10,7 @@ class WaitingForOrderConfirmationScreen extends StatefulWidget {
 class _WaitingForOrderConfirmationScreenState extends State<WaitingForOrderConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: Text('Waiting for the confirmation from the canteen'))
     );
   }

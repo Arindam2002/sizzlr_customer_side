@@ -17,7 +17,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return Scaffold(
       backgroundColor: kPrimaryGreenAccent,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: LayoutBuilder(builder: (context, constraints) => ListView(
           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           children: [
@@ -45,22 +45,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         color: kPrimaryColor
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
                       "A verification code has been sent to +91 ${widget.mobileNumber}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black38,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 28,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -77,7 +77,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               _textFieldOTP(first: false, last: true),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 22,
                           ),
                           SizedBox(
@@ -91,7 +91,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                   ),
                                 );
                               },
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(14.0),
                                 child: Text(
                                   'Verify',
@@ -103,13 +103,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Didn't receive any code?",
                           style: TextStyle(
                             fontSize: 14,
@@ -117,7 +117,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        TextButton(onPressed: (){}, child: Text('Resend Code'))
+                        TextButton(onPressed: (){}, child: const Text('Resend Code'))
                       ],
                     )
                   ],
@@ -142,17 +142,17 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               if (value.length == 1 && last == false) {
                 FocusScope.of(context).nextFocus();
               }
-              if (value.length == 0 && first == false) {
+              if (value.isEmpty && first == false) {
                 FocusScope.of(context).previousFocus();
               }
             },
             showCursor: true,
             readOnly: false,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic),
+            style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic),
             keyboardType: TextInputType.number,
             maxLength: 1,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               counter: Offstage(),
             ),
           ),

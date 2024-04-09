@@ -13,9 +13,9 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Text('Terms & Conditions', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+        title: const Text('Terms & Conditions', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Text('Stuff Goes here')
       ),

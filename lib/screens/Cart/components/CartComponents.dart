@@ -1,17 +1,14 @@
 import 'dart:ui';
 
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
 import 'package:sizzlr_customer_side/providers/couponProvider.dart';
 import 'package:sizzlr_customer_side/screens/Cart/CartScreen.dart';
 
 import '../../../constants/constants.dart';
-import '../../../providers/canteenProvider.dart';
 import '../../../providers/cartProvider.dart';
 
 class CartSnackBar extends StatelessWidget {
@@ -29,8 +26,8 @@ class CartSnackBar extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 40.0, sigmaY: 40.0),
           child: Container(
-            padding: EdgeInsets.only(left: 15, right: 0, top: 5, bottom: 5),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(left: 15, right: 0, top: 5, bottom: 5),
+            decoration: const BoxDecoration(
                 border: Border(top: BorderSide(color: Color(0xFFf2f1f2)))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +71,7 @@ class CartSnackBar extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CartScreen(),
+                            builder: (context) => const CartScreen(),
                           ),
                         );
                       },
@@ -107,13 +104,13 @@ class CartSnackBar extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: Text('Cancel')),
+                                        child: const Text('Cancel')),
                                     TextButton(
                                         onPressed: () {
                                           context.read<Cart>().discardCart();
                                           Navigator.pop(context);
                                         },
-                                        child: Text('Discard'))
+                                        child: const Text('Discard'))
                                   ],
                                 ));
                       },
@@ -153,7 +150,7 @@ class OrdersSectionInCart extends StatelessWidget {
             decoration: BoxDecoration(
                 border:
                     Border(top: BorderSide(color: kPrimaryGreen, width: 4))),
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: Consumer<Cart>(builder: (context, cartProvider, child) {
               final items = cartProvider.cart.values.map((item) => CartItem(item: item[0])).toList();
               return ListView(
@@ -192,13 +189,13 @@ class CartItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 3.0),
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(color: Colors.green),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.circle,
                       size: 8,
                       color: Colors.green,
@@ -215,13 +212,13 @@ class CartItem extends StatelessWidget {
                       children: [
                         Text(
                           '${item.itemName}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           'Serves: ${item.servingQuantity}',
-                          style: TextStyle(fontSize: 11, color: Colors.black54),
+                          style: const TextStyle(fontSize: 11, color: Colors.black54),
                         ),
                       ],
                     ),
@@ -291,7 +288,7 @@ class CartItem extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
                   '₹${item.price}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               )
             ],
@@ -320,7 +317,7 @@ class TotalSavingsInOrderComponent extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: kBoxShadowList,
         ),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         child: Text(
           'You saved ₹$amountSaved on this order!',
           style: TextStyle(color: kPrimaryGreen, fontWeight: FontWeight.bold),
@@ -353,8 +350,8 @@ class CouponChipComponent extends StatelessWidget {
         shadowColor: Colors.grey.shade400,
         elevation: 0.5,
         label: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: SizedBox(
             width: 150,
             child: Row(
               children: [
@@ -366,11 +363,11 @@ class CouponChipComponent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('$couponTitle', style: TextStyle(fontWeight: FontWeight.bold), softWrap: true,),
-                        Text('$couponSubtitle', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),),
+                        Text('$couponTitle', style: const TextStyle(fontWeight: FontWeight.bold), softWrap: true,),
+                        Text('$couponSubtitle', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),),
                         Padding(
                           padding: const EdgeInsets.only(top: 5.0),
-                          child: Text('Valid till $validTill', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300, color: Colors.black54, fontStyle: FontStyle.italic),),
+                          child: Text('Valid till $validTill', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w300, color: Colors.black54, fontStyle: FontStyle.italic),),
                         ),
                       ],
                     ),
@@ -380,7 +377,7 @@ class CouponChipComponent extends StatelessWidget {
             ),
           ),
         ),
-        labelStyle: TextStyle(fontSize: 12),
+        labelStyle: const TextStyle(fontSize: 12),
         side: context.watch<Coupon>().couponId == keyValue ? BorderSide(color: kBlueColor) : BorderSide(color: Colors.grey.shade300),
         selectedColor: kBlueAccent,
         labelPadding: EdgeInsets.zero,
@@ -405,7 +402,7 @@ class ApplyCouponComponent extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
           color: Colors.white,
           boxShadow: kBoxShadowList,
         ),
@@ -425,7 +422,7 @@ class ApplyCouponComponent extends StatelessWidget {
                 color: kBlueColor,
                 size: 22,
               ),
-              title: context.watch<Coupon>().couponId.isEmpty ? Text(
+              title: context.watch<Coupon>().couponId.isEmpty ? const Text(
                 'Apply coupon',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -437,15 +434,15 @@ class ApplyCouponComponent extends StatelessWidget {
                     color: kBlueColor),
               ),
               childrenPadding:
-              EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               children: [
                 context
                     .watch<Coupon>()
                     .activeCouponsForCurrUser
                     .isEmpty
                     ? Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       "You don't have any coupons :')\nComplete weekly tasks to unlock exciting coupons!",
                       textAlign: TextAlign.center,
@@ -462,17 +459,17 @@ class ApplyCouponComponent extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             height: 80,
                             // width: 100,
                             // color: Colors.grey,
                             child: ListView(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               dragStartBehavior:
                               DragStartBehavior.down,
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
-                              children: [
+                              children: const [
                                 CouponChipComponent(
                                   couponTitle:
                                   '50% off total order',
@@ -558,7 +555,7 @@ class OrderingFromCanteen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
         children: [
-          Text(
+          const Text(
             'Ordering from ',
             style: TextStyle(
               fontSize: 16,
@@ -566,7 +563,7 @@ class OrderingFromCanteen extends StatelessWidget {
           ),
           Text(
             '$canteenName',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -588,7 +585,7 @@ class CtaPayAmount extends StatelessWidget {
           color: Colors.grey.withOpacity(0.2),
           spreadRadius: 1,
           blurRadius: 10,
-          offset: Offset(0, -2),
+          offset: const Offset(0, -2),
         ),
       ]),
       child: Padding(
@@ -609,7 +606,7 @@ class CtaPayAmount extends StatelessWidget {
                   ),
                   Text(
                     '₹${context.watch<Cart>().sumTotalMrp + 6}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -627,8 +624,8 @@ class CtaPayAmount extends StatelessWidget {
                     backgroundColor:
                     MaterialStateProperty.all(kPrimaryGreen)),
                 onPressed: onPressed,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
                     'Proceed',
                     style: TextStyle(
@@ -656,7 +653,7 @@ class BillComponent extends StatelessWidget {
     return Consumer<Cart>(
       builder: (context, cartProvider, child) {
         return Container(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.0),
@@ -669,11 +666,11 @@ class BillComponent extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Item Total', style: TextStyle(fontSize: 12,
+                    const Text('Item Total', style: TextStyle(fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.black54),),
                     Text('₹${cartProvider
-                        .sumTotalMrp}', style: TextStyle(fontSize: 14,
+                        .sumTotalMrp}', style: const TextStyle(fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF444547)),),
                   ],
@@ -684,10 +681,10 @@ class BillComponent extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Convenience fee', style: TextStyle(fontSize: 12,
+                    const Text('Convenience fee', style: TextStyle(fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.black54),),
-                    Text('+ ₹$convenienceFee', style: TextStyle(fontSize: 14,
+                    Text('+ ₹$convenienceFee', style: const TextStyle(fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF444547)),),
                   ],
@@ -702,8 +699,8 @@ class BillComponent extends StatelessWidget {
                     direction: Axis.horizontal,
                     dashColor: Colors.black54.withAlpha(60),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -729,12 +726,12 @@ class BillComponent extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('To Pay',
+                        const Text('To Pay',
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight
                               .bold, color: Colors.black),),
                         Text('₹${cartProvider
                             .sumTotalMrp + convenienceFee}',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight
                               .bold, color: Colors.black),),
                       ],
                     ),

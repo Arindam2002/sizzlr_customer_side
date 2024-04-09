@@ -1,7 +1,6 @@
 import "dart:convert";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:http/http.dart";
 import "package:sizzlr_customer_side/constants/constants.dart";
@@ -15,7 +14,9 @@ class AuthProvider with ChangeNotifier {
   User? get user => _user;
 
   Future<void> signInWithGoogle() async {
+    print('Signing In...');
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    print('Google User: $googleUser');
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;

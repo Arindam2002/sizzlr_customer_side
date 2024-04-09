@@ -64,7 +64,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ],
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -85,7 +85,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   }
                                   return null;
                                 },
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                                 decoration: kFormFieldDecoration.copyWith(labelText: 'Institute Name',)
                             ),
                           ),
@@ -102,7 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   }
                                   return null;
                                 },
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                                 decoration: kFormFieldDecoration.copyWith(labelText: 'Canteen\'s Name',)
                             ),
                           ),
@@ -119,7 +119,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   }
                                   return null;
                                 },
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                                 decoration: kFormFieldDecoration.copyWith(labelText: 'Manager\'s Name',)
                             ),
                           ),
@@ -128,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             child: TextFormField(
                               enabled: false,
                                 initialValue: widget.mobileNumber,
-                                style: TextStyle(fontSize: 12),
+                                style: const TextStyle(fontSize: 12),
                                 decoration: kFormFieldDecoration.copyWith(labelText: 'Manager\'s Name',)
                             ),
                           ),
@@ -148,7 +148,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         );
                                       }
                                     },
-                                    child: Text('Register'),
+                                    child: const Text('Register'),
                                   ),
                                 ),
                               ),

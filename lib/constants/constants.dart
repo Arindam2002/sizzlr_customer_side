@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,8 @@ Color kBlueAccent = const Color(0xFFEDF3FF);
 
 enum Role { customer, manager }
 
-const String baseUrl = 'https://sizzlr-backend-v1-hymqs72joa-uc.a.run.app/api';
+// const String baseUrl = 'https://sizzlr-backend-v1-hymqs72joa-uc.a.run.app/api';
+const String baseUrl = 'http://localhost:8080/api';
 // const String mongoUri = 'mongodb://ac-q2w90nf-shard-00-00.i1w2lfj.mongodb.net:27017,ac-q2w90nf-shard-00-01.i1w2lfj.mongodb.net:27017,ac-q2w90nf-shard-00-02.i1w2lfj.mongodb.net:27017/?replicaSet=atlas-6kxl5t-shard-0';
 const String mongoUri = 'mongodb+srv://sizzlr:Alohmora%4020@sizzlr-cluster-0.i1w2lfj.mongodb.net/?retryWrites=true&w=majority';
 

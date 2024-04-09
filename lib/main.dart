@@ -12,7 +12,6 @@ import 'package:sizzlr_customer_side/providers/viewCartLoaderProvider.dart';
 import 'package:sizzlr_customer_side/screens/Authentication/LoginScreen.dart';
 import 'package:sizzlr_customer_side/screens/Home/HomeScreen.dart';
 import 'package:sizzlr_customer_side/screens/Home/ProfileScreen.dart';
-import 'package:sizzlr_customer_side/screens/Home/components/components.dart';
 import 'package:provider/provider.dart';
 import 'constants/constants.dart';
 import 'firebase_options.dart';
@@ -22,7 +21,7 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -32,9 +31,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData windowData =
-        MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+        MediaQueryData.fromView(WidgetsBinding.instance.window);
     windowData = windowData.copyWith(
-      textScaleFactor: 1,
+      textScaler: const TextScaler.linear(1),
     );
     return MultiProvider(
       providers: [
@@ -51,16 +50,16 @@ class MyApp extends StatelessWidget {
         title: 'Sizzlr',
         theme: ThemeData(
           useMaterial3: true,
-          colorSchemeSeed: Color(0xFF27742D),
+          colorSchemeSeed: const Color(0xFF27742D),
           textTheme: GoogleFonts.latoTextTheme(),
         ),
         home: Consumer<AuthProvider>(
           builder: (context, authProvider, child) {
             if (authProvider.user == null) {
-              return LoginScreen();
+              return const LoginScreen();
             } else {
               Provider.of<CanteenProvider>(context, listen: false).getCanteens();
-              return MyHomePage();
+              return const MyHomePage();
             }
           },
         ),
@@ -83,10 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
 
-  List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0'),
+  final List<Widget> _widgetOptions = <Widget>[
+    const Text('Index 0'),
     HomeScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -140,13 +139,13 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
                         BoxShadow(
-                            offset: Offset(0, 4),
+                            offset: const Offset(0, 4),
                             color: Colors.black.withOpacity(0.15),
                             blurRadius: 6)
                       ]),
@@ -159,8 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 24,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: Text(
                           '69',
                           style: TextStyle(color: Colors.black54),
@@ -184,26 +183,26 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 10,
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
           ),
         ]),
         child: BottomNavigationBar(
           unselectedLabelStyle:
-              TextStyle(fontSize: 10, color: Color(0xFF868686)),
-          selectedLabelStyle: TextStyle(
+              const TextStyle(fontSize: 10, color: Color(0xFF868686)),
+          selectedLabelStyle: const TextStyle(
               fontSize: 10, fontWeight: FontWeight.w500, color: Colors.black),
           selectedIconTheme: IconThemeData(color: kPrimaryGreen),
-          unselectedIconTheme: IconThemeData(color: Color(0xFF868686)),
+          unselectedIconTheme: const IconThemeData(color: Color(0xFF868686)),
           selectedItemColor: Colors.black,
-          unselectedItemColor: Color(0xFF868686),
+          unselectedItemColor: const Color(0xFF868686),
           showUnselectedLabels: true,
           items: [
             BottomNavigationBarItem(
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 2.0),
                 child: _selectedIndex == 0
-                    ? Icon(Icons.lunch_dining_rounded)
-                    : Icon(Icons.lunch_dining_outlined),
+                    ? const Icon(Icons.lunch_dining_rounded)
+                    : const Icon(Icons.lunch_dining_outlined),
               ),
               label: 'Menu',
             ),
@@ -211,8 +210,8 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 2.0),
                 child: _selectedIndex == 1
-                    ? Icon(Icons.food_bank_rounded)
-                    : Icon(Icons.food_bank_outlined),
+                    ? const Icon(Icons.food_bank_rounded)
+                    : const Icon(Icons.food_bank_outlined),
               ),
               label: 'Order',
             ),
@@ -227,8 +226,8 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Padding(
                 padding: const EdgeInsets.only(bottom: 2.0),
                 child: _selectedIndex == 2
-                    ? Icon(Icons.person_rounded)
-                    : Icon(Icons.person_outline),
+                    ? const Icon(Icons.person_rounded)
+                    : const Icon(Icons.person_outline),
               ),
               label: 'Profile',
             ),

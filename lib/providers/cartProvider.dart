@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:sizzlr_customer_side/models/MenuItemModel.dart';
 import '../constants/constants.dart';
 
 class Cart with ChangeNotifier {
-  Map<String, int> _cartMap = {};
+  final Map<String, int> _cartMap = {};
   int _total = 0;
-  Map<String, List> _cart = {};
+  final Map<String, List> _cart = {};
 
   Map<String, int> get currentCartItems => _cartMap;
   int get sumTotalMrp => _total;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:sizzlr_customer_side/constants/constants.dart';
 import 'package:sizzlr_customer_side/models/CanteenModel.dart';

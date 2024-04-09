@@ -1,8 +1,5 @@
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/constants.dart';
-import '../Cart/components/CartComponents.dart';
 import 'components/components.dart';
 
 class YourOrders extends StatefulWidget {
@@ -18,11 +15,11 @@ class _YourOrdersState extends State<YourOrders> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Text('Your orders', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+        title: const Text('Your orders', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        children: [
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        children: const [
           MyOrderCard(),
         ],
       ),
