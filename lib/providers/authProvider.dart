@@ -14,9 +14,7 @@ class AuthProvider with ChangeNotifier {
   User? get user => _user;
 
   Future<void> signInWithGoogle() async {
-    print('Signing In...');
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    print('Google User: $googleUser');
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
